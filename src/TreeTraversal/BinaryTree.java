@@ -59,12 +59,38 @@ public class BinaryTree {
 		System.out.println("reached one cycle of RECURSIVE call !!!!!");
 	}
 	
+	public Node focusNode = null;
+	// Search all left sub-nodes and all right sub-node until you find key1, key2 both 
+	public Node findLCA(Node focusNode, int key1, int key2){
+		if(focusNode != null){
+			if( searchAllSubNodes(focusNode.leftChild, key1, key2)  &&
+					searchAllSubNodes(focusNode.rightChild, key1, key2)){
+				return focusNode; 
+			} 
+			if(findLCA(focusNode.leftChild, key1, key2) != null) return focusNode.leftChild ;
+			if(findLCA(focusNode.rightChild, key1, key2) != null) return focusNode.rightChild;	
+		}
+		return null;
+	}
+	
+	public Boolean searchAllSubNodes(Node focusNode, int key1, int key2){
+		
+		if( focusNode != null ){
+			if ( focusNode.key == key1 || focusNode.key == key2) return true;
+			if(searchAllSubNodes(focusNode.leftChild, key1, key2)) return true;
+			if(searchAllSubNodes(focusNode.rightChild, key1, key2)) return true;	
+		}
+		return false;
+	}
+		
+	// To show all sub-nodes
+	// print focusNode first then print child nodes if it's not null
 	public void showAllNodes(Node focusNode){
-		System.out.println("focusNode => " + focusNode.toString());
-		if( focusNode.hasLeftChild(focusNode) || focusNode.hasRightChild(focusNode) ){
-			System.out.println("focusNode Left Child => " + focusNode.leftChild.toString());
-			System.out.println("focusNode Right Child => " + focusNode.rightChild.toString());
+		System.out.println("focusNode => " + focusNode.toStringWithChild());
+		if( focusNode.hasLeftChild() ){	
 			showAllNodes(focusNode.leftChild);
+		}
+		if( focusNode.hasRightChild() ){	
 			showAllNodes(focusNode.rightChild);
 		}
 	}
@@ -79,6 +105,10 @@ public class BinaryTree {
 		theTree.addNode(85, "Salesman 1");
 		
 		theTree.showAllNodes(theTree.root);
+		Node nd = theTree.findLCA(theTree.root, 85, 75);
+		System.out.println("\n\n" + nd);
+
+		
 		
 		/*System.out.println("\n\n preOrderTraverseTree !!!!!");
 		theTree.preOrderTraverseTree(theTree.root);
@@ -101,21 +131,30 @@ class Node{
 		this.name = name;
 	}
 	
-	public Boolean hasLeftChild(Node focusNode){
-		if(focusNode.leftChild != null ) return true;
+	public Boolean hasLeftChild(){
+		if(leftChild != null ) return true;
 		return false;
 	}
 	
-	public Boolean hasRightChild(Node focusNode){
-		if(focusNode.rightChild != null ) return true;
+	public Boolean hasRightChild(){
+		if(rightChild != null ) return true;
 		return false;
 	}
-	
-	
-	
-	
+		
 	
 	public String toString(){
 		return name + " has the key " + key;
 	}
+	
+	public String toStringWithChild(){
+		String str = this.toString() ;  
+		if( hasLeftChild() ){
+			str += "\n\t Left Child => " + leftChild.toString();	
+		}
+		if( hasRightChild() ){
+			str += "\n\t Right Child => " + rightChild.toString();		
+		}
+		return str;
+	}
+	
 }
