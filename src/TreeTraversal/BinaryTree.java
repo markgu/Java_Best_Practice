@@ -59,7 +59,7 @@ public class BinaryTree {
 		System.out.println("reached one cycle of RECURSIVE call !!!!!");
 	}
 	
-	public Node focusNode = null;
+	/*public Node focusNode = null;
 	// Search all left sub-nodes and all right sub-node until you find key1, key2 both 
 	public Node findLCA(Node focusNode, int key1, int key2){
 		if(focusNode != null){
@@ -71,7 +71,22 @@ public class BinaryTree {
 			if(findLCA(focusNode.rightChild, key1, key2) != null) return focusNode.rightChild;	
 		}
 		return null;
+	}*/
+	
+	// simple approach and easy to understand
+	public Node findLCA2(Node node, int t1, int t2){
+		if(node == null){
+			return null;
+		}
+		if(node.key > t2 && node.key > t1){
+			return findLCA2(node.leftChild, t1, t2);
+		} else	if(node.key < t1 && node.key < t2){
+			return findLCA2(node.rightChild, t1, t2);
+		} else{
+			return node;
+		}
 	}
+	
 	
 	public Boolean searchAllSubNodes(Node focusNode, int key1, int key2){
 		
@@ -105,7 +120,7 @@ public class BinaryTree {
 		theTree.addNode(85, "Salesman 1");
 		
 		theTree.showAllNodes(theTree.root);
-		Node nd = theTree.findLCA(theTree.root, 85, 75);
+		Node nd = theTree.findLCA2(theTree.root, 50, 30);
 		System.out.println("\n\n" + nd);
 
 		

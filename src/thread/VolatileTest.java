@@ -18,12 +18,12 @@ public class VolatileTest implements Runnable {
 			synchronized(this) {
 				save = i;
 				increment();		
-				
+				if(i != save + 1) {
+					System.out.println("Atomic operation is violated !!!! The value of i => " + i);
+					System.exit(0);
+				}
 			}		
-			if(i != save + 1) {
-				System.out.println("Atomic operation is violated !!!! The value of i => " + i);
-				System.exit(0);
-			}
+			
 		}
 	}
 	
